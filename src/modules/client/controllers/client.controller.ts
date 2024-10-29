@@ -7,7 +7,6 @@ import ClientService from '../services/client.service';
 
 @Controller('clients')
 @ApiTags('clients')
-@UseInterceptors(ClientTransformInterceptor)
 export default class ClientController {
     public constructor(
         @Inject(ClientService)
@@ -15,6 +14,7 @@ export default class ClientController {
     ) { }
 
     @Get()
+    @UseInterceptors(ClientTransformInterceptor)
     @ApiOperation({ summary: 'Get all clients' })
     @ApiResponse({ status: 200, description: 'Clients retrieved successfully' })
     async getAll() {
@@ -26,6 +26,7 @@ export default class ClientController {
     }
 
     @Get('/:id')
+    @UseInterceptors(ClientTransformInterceptor)
     @ApiOperation({ summary: 'Get client by ID' })
     @ApiResponse({ status: 200, description: 'Client retrieved successfully' })
     @ApiResponse({ status: 404, description: 'Client not found' })
@@ -38,6 +39,7 @@ export default class ClientController {
     }
 
     @Post()
+    @UseInterceptors(ClientTransformInterceptor)
     @ApiOperation({ summary: 'Create a new client' })
     @ApiResponse({ status: 201, description: 'Client created successfully' })
     @ApiResponse({ status: 400, description: 'Invalid input' })
@@ -56,7 +58,7 @@ export default class ClientController {
     @ApiResponse({ status: 404, description: 'Client not found' })
     async update(@Param('id') id: string, @Body() updateClientDto: UpdateClientDto) {
         try {
-            return await this.clientService.updateOneById(id, updateClientDto);
+            await this.clientService.updateOneById(id, updateClientDto);
         } catch (error) {
             throw error;
         }

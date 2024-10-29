@@ -64,7 +64,7 @@ export default class ClientService {
         }
     }
 
-    async updateOneById(id: string, updateOneClient: UpdateOneClientDto): Promise<ClientDomainEntity> {
+    async updateOneById(id: string, updateOneClient: UpdateOneClientDto): Promise<void> {
 
         try {
 
@@ -76,16 +76,14 @@ export default class ClientService {
             clientById.phone = updateOneClient.phone ?? clientById.phone.toPrimitive();
             clientById.age = updateOneClient.age ?? clientById.age;
 
-            const updatedDomainEntity = await this.clientRepository.save(clientById);
+            const updateResult = await this.clientRepository.update(id, clientById);
 
-            return updatedDomainEntity;
-
-        } catch (error) {
-            if (error instanceof NotFoundException) {
-                throw error;
+            if (updateResult.affected === 0) {
+                throw new InternalServerErrorException(`an error occurred while updating the client`);
             };
 
-            throw new InternalServerErrorException(`an error occurred while updating the client: ${(<Error>error).message}`);
+        } catch (error) {
+            throw error;
         }
     };
 

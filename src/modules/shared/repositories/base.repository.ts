@@ -1,4 +1,5 @@
 import {
+    DeepPartial,
     DeleteResult,
     FindManyOptions,
     FindOptionsWhere,
@@ -50,10 +51,12 @@ export default abstract class BaseRepository<
 
     async update(
         criteria: string | number | FindOptionsWhere<DatabaseEntity> | Date | ObjectId | string[] | number[] | Date[] | ObjectId[],
-        partialEntity: QueryDeepPartialEntity<DatabaseEntity>
+        domainEntity: DomainEntity
     ): Promise<UpdateResult> {
         try {
-            return await this.repository.update(criteria, partialEntity);
+            const databaseEntity = this.toDatabaseEntity(domainEntity) as QueryDeepPartialEntity<DatabaseEntity>;
+            return await this.repository.update(criteria, databaseEntity);
+
         } catch (error) {
             throw error;
         }
@@ -69,5 +72,5 @@ export default abstract class BaseRepository<
 
     protected abstract toDomainEntity(databaseEntity: DatabaseEntity): DomainEntity;
 
-    protected abstract toDatabaseEntity(domainEntity: DomainEntity): DatabaseEntity;
+    protected abstract toDatabaseEntity(domainEntity: DomainEntity): DeepPartial<DatabaseEntity>;
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import BaseRepository from 'src/modules/shared/repositories/base.repository';
-import { Repository } from 'typeorm';
+import { DeepPartial, Repository } from 'typeorm';
 import ClientDatabaseEntity from '../db/client.db.entity';
 import ClientDomainEntity from '../domain/client.domain.entity';
 import ClientMapper from '../mappers/client.mapper';
@@ -22,7 +22,7 @@ export class ClientRepository extends BaseRepository<ClientDomainEntity, ClientD
         return ClientMapper.toDomainEntity(databaseEntity);
     };
 
-    protected toDatabaseEntity(domainEntity: ClientDomainEntity): ClientDatabaseEntity {
+    protected toDatabaseEntity(domainEntity: ClientDomainEntity): DeepPartial<ClientDatabaseEntity> {
         return ClientMapper.toDatabaseEntity(domainEntity);
     };
 

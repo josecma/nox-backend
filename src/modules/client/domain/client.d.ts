@@ -10,4 +10,4 @@ export type PrimitiveClient = {
     age: string;
 };
 
-export type PrimitiveMobilePhoneNumber = Pick<ClientConstructorProps['phone'], 'prefix' | 'code' | 'personalNumber'>;
+export type PrimitiveMobilePhoneNumber = Pick<PrimitiveClient['phone'], 'prefix' | 'code' | 'personalNumber'>;

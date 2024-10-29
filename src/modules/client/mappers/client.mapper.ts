@@ -1,3 +1,4 @@
+import { DeepPartial } from "typeorm";
 import ClientDatabaseEntity from "../db/client.db.entity";
 import { PrimitiveClient } from "../domain/client";
 import ClientDomainEntity from "../domain/client.domain.entity";
@@ -26,7 +27,7 @@ export default class ClientMapper {
 
     static toDatabaseEntity(
         domainEntity: ClientDomainEntity,
-    ): ClientDatabaseEntity {
+    ): DeepPartial<ClientDatabaseEntity> {
         const { id, name, age, email, phone } = domainEntity;
         return {
             id: id,
